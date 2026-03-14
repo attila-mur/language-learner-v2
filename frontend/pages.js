@@ -249,22 +249,24 @@ function renderResults(results, topicId) {
  * @param {string} sessionId
  * @param {number|null} filterTopicId - pre-selected topic filter
  */
-function renderCustomWords(data, topics, sessionId, filterTopicId) {
+function renderCustomWords(data, allTopics, sessionId, filterTopicId) {
   const app = $('#app');
   if (!app) return;
 
   const words = data.words || [];
+  const customTopics = (allTopics || []).filter(t => t.isCustom);
   const topicsMap = {};
-  (topics || []).forEach(t => { topicsMap[t.id] = t.name; });
+  (allTopics || []).forEach(t => { topicsMap[t.id] = t.name; });
 
   // Filter words by topic if needed
   let displayedWords = words;
-  let activeTopicFilter = filterTopicId || '';
 
   function getTopicName(topicId) {
     if (!topicId) return null;
     return topicsMap[topicId] || null;
   }
+
+  let activeTopicFilter = filterTopicId || '';
 
   function render(wordsToShow, topicFilter) {
     app.innerHTML = `
@@ -285,10 +287,10 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
             </div>
           </div>
           <div class="form-group" style="margin-bottom:12px;">
-            <label class="form-label" for="topic-select">Topic (optional)</label>
+            <label class="form-label" for="topic-select">Topic <span style="color:var(--color-danger)">*</span></label>
             <select id="topic-select" class="form-select">
-              <option value="">-- No topic --</option>
-              ${(topics || []).map(t => `<option value="${t.id}" ${String(topicFilter) === String(t.id) ? 'selected' : ''}>${escapeHtml(t.name)}${t.isCustom ? ' (mine)' : ''}</option>`).join('')}
+              <option value="">-- Select a topic --</option>
+              ${customTopics.map(t => `<option value="${t.id}" ${String(topicFilter) === String(t.id) ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
               <option value="__new__">+ Create new topic...</option>
             </select>
           </div>
@@ -357,6 +359,10 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
           showError('Please enter both Hungarian and English words.');
           return;
         }
+        if (!topicSelect || !topicSelect.value) {
+          showError('Please select or create a topic.');
+          return;
+        }
 
         try {
           addBtn.disabled = true;
@@ -364,7 +370,7 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
 
           let topicId = null;
 
-          if (topicSelect && topicSelect.value === '__new__') {
+          if (topicSelect.value === '__new__') {
             // Create the new topic first
             const newTopicName = ($('#new-topic-input') || {}).value?.trim();
             if (!newTopicName) {
@@ -378,9 +384,9 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
               body: JSON.stringify({ sessionId, name: newTopicName })
             });
             topicId = newTopic.id;
-            // Bust the topics cache so the new topic appears on home
-            topics = [];
-          } else if (topicSelect && topicSelect.value) {
+            // Force-reload the global topics cache (fixes shadowing bug)
+            await loadTopics(true);
+          } else {
             topicId = parseInt(topicSelect.value);
           }
 

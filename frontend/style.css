@@ -75,6 +75,10 @@ body {
   gap: 16px;
 }
 
+.site-title-link {
+  text-decoration: none;
+}
+
 .site-title {
   font-size: 1.25rem;
   font-weight: 700;
