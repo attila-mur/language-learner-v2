@@ -172,6 +172,29 @@ main.container {
   gap: 8px;
 }
 
+.topic-card-custom {
+  border-color: var(--color-secondary);
+  background: linear-gradient(135deg, #fff 85%, var(--color-success-light));
+}
+
+.topic-card-custom:hover {
+  border-color: var(--color-secondary-dark);
+}
+
+.topic-custom-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-secondary-dark);
+  background: var(--color-success-light);
+  border: 1px solid var(--color-secondary);
+  border-radius: 99px;
+  padding: 2px 8px;
+  margin-bottom: 8px;
+}
+
 /* Buttons */
 .btn {
   display: inline-flex;

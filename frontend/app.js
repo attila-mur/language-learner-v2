@@ -49,9 +49,9 @@ async function initSession() {
 /**
  * Load topics from the API (cached).
  */
-async function loadTopics() {
-  if (topics.length > 0) return topics;
-  const data = await apiFetch('/api/topics');
+async function loadTopics(force = false) {
+  if (topics.length > 0 && !force) return topics;
+  const data = await apiFetch(`/api/topics?sessionId=${encodeURIComponent(sessionId || '')}`);
   topics = data || [];
   return topics;
 }

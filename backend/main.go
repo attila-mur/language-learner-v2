@@ -60,6 +60,7 @@ func main() {
 
 		// Topics & Quiz
 		api.GET("/topics", handlers.GetTopics)
+		api.POST("/topics", handlers.CreateCustomTopic)
 		api.GET("/quiz/:topicId", handlers.GetQuiz)
 
 		// Submit

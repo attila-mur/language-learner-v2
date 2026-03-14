@@ -6,57 +6,58 @@ function renderHome(topics) {
   const app = $('#app');
   if (!app) return;
 
-  if (!topics || topics.length === 0) {
-    app.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">📚</div>
-        <div class="empty-state-text">No topics available.</div>
-        <div class="empty-state-sub">Check back later or add your own words.</div>
+  const seeded = (topics || []).filter(t => !t.isCustom);
+  const custom = (topics || []).filter(t => t.isCustom);
+
+  function topicCardHTML(topic) {
+    return `
+      <div class="topic-card${topic.isCustom ? ' topic-card-custom' : ''}" data-topic-id="${topic.id}">
+        ${topic.isCustom ? '<span class="topic-custom-badge">My Topic</span>' : ''}
+        <div class="topic-card-name">${escapeHtml(topic.name)}</div>
+        <div class="topic-card-desc">${escapeHtml(topic.description || '')}</div>
+        <div class="topic-card-actions">
+          <button class="btn btn-primary btn-sm start-quiz-btn" data-topic-id="${topic.id}">
+            Start Quiz
+          </button>
+          <button class="btn btn-outline btn-sm add-words-btn" data-topic-id="${topic.id}">
+            + Add Words
+          </button>
+        </div>
       </div>`;
-    return;
   }
 
   app.innerHTML = `
     <h2 class="page-title">Choose a Topic</h2>
     <p class="page-subtitle">Select a vocabulary topic to start a quiz. Test yourself in Hungarian!</p>
-    <div class="topics-grid">
-      ${topics.map(topic => `
-        <div class="topic-card" data-topic-id="${topic.id}">
-          <div class="topic-card-name">${escapeHtml(topic.name)}</div>
-          <div class="topic-card-desc">${escapeHtml(topic.description || '')}</div>
-          <div class="topic-card-actions">
-            <button class="btn btn-primary btn-sm start-quiz-btn" data-topic-id="${topic.id}">
-              Start Quiz
-            </button>
-            <button class="btn btn-outline btn-sm add-words-btn" data-topic-id="${topic.id}">
-              + Add Words
-            </button>
-          </div>
-        </div>
-      `).join('')}
+
+    ${seeded.length > 0 ? `<div class="topics-grid">${seeded.map(topicCardHTML).join('')}</div>` : ''}
+
+    ${custom.length > 0 ? `
+      <div class="section-heading" style="margin-top:2rem;">My Topics</div>
+      <div class="topics-grid">${custom.map(topicCardHTML).join('')}</div>
+    ` : ''}
+
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="#custom-words" class="btn btn-outline">Manage My Words & Topics</a>
     </div>`;
 
-  // Attach event listeners
   app.querySelectorAll('.start-quiz-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const topicId = btn.dataset.topicId;
-      window.location.hash = `#quiz?topic=${topicId}`;
+      window.location.hash = `#quiz?topic=${btn.dataset.topicId}`;
     });
   });
 
   app.querySelectorAll('.add-words-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const topicId = btn.dataset.topicId;
-      window.location.hash = `#custom-words?topic=${topicId}`;
+      window.location.hash = `#custom-words?topic=${btn.dataset.topicId}`;
     });
   });
 
   app.querySelectorAll('.topic-card').forEach(card => {
     card.addEventListener('click', () => {
-      const topicId = card.dataset.topicId;
-      window.location.hash = `#quiz?topic=${topicId}`;
+      window.location.hash = `#quiz?topic=${card.dataset.topicId}`;
     });
   });
 }
@@ -287,8 +288,13 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
             <label class="form-label" for="topic-select">Topic (optional)</label>
             <select id="topic-select" class="form-select">
               <option value="">-- No topic --</option>
-              ${(topics || []).map(t => `<option value="${t.id}" ${String(topicFilter) === String(t.id) ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
+              ${(topics || []).map(t => `<option value="${t.id}" ${String(topicFilter) === String(t.id) ? 'selected' : ''}>${escapeHtml(t.name)}${t.isCustom ? ' (mine)' : ''}</option>`).join('')}
+              <option value="__new__">+ Create new topic...</option>
             </select>
+          </div>
+          <div class="form-group" id="new-topic-group" style="display:none; margin-bottom:12px;">
+            <label class="form-label" for="new-topic-input">New topic name</label>
+            <input type="text" id="new-topic-input" class="form-input" placeholder="e.g. Travel, Work, Sports..." />
           </div>
           <div class="form-actions">
             <button class="btn btn-primary" id="add-word-btn">Add Word</button>
@@ -328,6 +334,17 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
         </div>
       </div>`;
 
+    // Show/hide new topic input when "Create new topic..." is selected
+    const topicSelectEl = $('#topic-select');
+    if (topicSelectEl) {
+      topicSelectEl.addEventListener('change', () => {
+        const newTopicGroup = $('#new-topic-group');
+        if (newTopicGroup) {
+          newTopicGroup.style.display = topicSelectEl.value === '__new__' ? 'block' : 'none';
+        }
+      });
+    }
+
     // Add word handler
     const addBtn = $('#add-word-btn');
     if (addBtn) {
@@ -335,7 +352,6 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
         const hungarian = $('#hw-input').value.trim();
         const english = $('#en-input').value.trim();
         const topicSelect = $('#topic-select');
-        const topicId = topicSelect && topicSelect.value ? parseInt(topicSelect.value) : null;
 
         if (!hungarian || !english) {
           showError('Please enter both Hungarian and English words.');
@@ -345,14 +361,37 @@ function renderCustomWords(data, topics, sessionId, filterTopicId) {
         try {
           addBtn.disabled = true;
           addBtn.textContent = 'Adding...';
+
+          let topicId = null;
+
+          if (topicSelect && topicSelect.value === '__new__') {
+            // Create the new topic first
+            const newTopicName = ($('#new-topic-input') || {}).value?.trim();
+            if (!newTopicName) {
+              showError('Please enter a name for the new topic.');
+              addBtn.disabled = false;
+              addBtn.textContent = 'Add Word';
+              return;
+            }
+            const newTopic = await apiFetch('/api/topics', {
+              method: 'POST',
+              body: JSON.stringify({ sessionId, name: newTopicName })
+            });
+            topicId = newTopic.id;
+            // Bust the topics cache so the new topic appears on home
+            topics = [];
+          } else if (topicSelect && topicSelect.value) {
+            topicId = parseInt(topicSelect.value);
+          }
+
           await apiFetch('/api/custom-words', {
             method: 'POST',
             body: JSON.stringify({ sessionId, hungarian, english, topicId })
           });
-          // Navigate back to custom-words page to show updated list
+
+          // Reload the page content
           const newHash = '#custom-words' + (activeTopicFilter ? `?topic=${activeTopicFilter}` : '');
           if (window.location.hash === newHash) {
-            // Hash hasn't changed — manually reload the page content
             window.dispatchEvent(new Event('hashchange'));
           } else {
             window.location.hash = newHash;
