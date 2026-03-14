@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Animals",
+    "description": "Common animals in Hungarian",
+    "words": [
+      {"hungarian": "macska", "english": "cat"},
+      {"hungarian": "kutya", "english": "dog"},
+      {"hungarian": "madár", "english": "bird"},
+      {"hungarian": "hal", "english": "fish"},
+      {"hungarian": "ló", "english": "horse"},
+      {"hungarian": "tehén", "english": "cow"},
+      {"hungarian": "disznó", "english": "pig"},
+      {"hungarian": "juh", "english": "sheep"},
+      {"hungarian": "kecske", "english": "goat"},
+      {"hungarian": "nyúl", "english": "rabbit"},
+      {"hungarian": "egér", "english": "mouse"},
+      {"hungarian": "elefánt", "english": "elephant"},
+      {"hungarian": "oroszlán", "english": "lion"},
+      {"hungarian": "tigris", "english": "tiger"},
+      {"hungarian": "medve", "english": "bear"},
+      {"hungarian": "farkas", "english": "wolf"},
+      {"hungarian": "róka", "english": "fox"},
+      {"hungarian": "majom", "english": "monkey"}
+    ]
+  },
+  {
+    "name": "Food",
+    "description": "Common food items in Hungarian",
+    "words": [
+      {"hungarian": "kenyér", "english": "bread"},
+      {"hungarian": "vaj", "english": "butter"},
+      {"hungarian": "sajt", "english": "cheese"},
+      {"hungarian": "tej", "english": "milk"},
+      {"hungarian": "tojás", "english": "egg"},
+      {"hungarian": "hús", "english": "meat"},
+      {"hungarian": "hal", "english": "fish"},
+      {"hungarian": "gyümölcs", "english": "fruit"},
+      {"hungarian": "zöldség", "english": "vegetable"},
+      {"hungarian": "alma", "english": "apple"},
+      {"hungarian": "körte", "english": "pear"},
+      {"hungarian": "narancs", "english": "orange"},
+      {"hungarian": "szőlő", "english": "grape"},
+      {"hungarian": "eper", "english": "strawberry"},
+      {"hungarian": "paradicsom", "english": "tomato"},
+      {"hungarian": "burgonya", "english": "potato"},
+      {"hungarian": "rizs", "english": "rice"},
+      {"hungarian": "tészta", "english": "pasta"}
+    ]
+  },
+  {
+    "name": "Colors",
+    "description": "Colors in Hungarian",
+    "words": [
+      {"hungarian": "piros", "english": "red"},
+      {"hungarian": "kék", "english": "blue"},
+      {"hungarian": "zöld", "english": "green"},
+      {"hungarian": "sárga", "english": "yellow"},
+      {"hungarian": "fehér", "english": "white"},
+      {"hungarian": "fekete", "english": "black"},
+      {"hungarian": "szürke", "english": "grey"},
+      {"hungarian": "barna", "english": "brown"},
+      {"hungarian": "narancssárga", "english": "orange"},
+      {"hungarian": "lila", "english": "purple"},
+      {"hungarian": "rózsaszín", "english": "pink"},
+      {"hungarian": "arany", "english": "gold"},
+      {"hungarian": "ezüst", "english": "silver"}
+    ]
+  },
+  {
+    "name": "Numbers",
+    "description": "Numbers in Hungarian",
+    "words": [
+      {"hungarian": "egy", "english": "one"},
+      {"hungarian": "kettő", "english": "two"},
+      {"hungarian": "három", "english": "three"},
+      {"hungarian": "négy", "english": "four"},
+      {"hungarian": "öt", "english": "five"},
+      {"hungarian": "hat", "english": "six"},
+      {"hungarian": "hét", "english": "seven"},
+      {"hungarian": "nyolc", "english": "eight"},
+      {"hungarian": "kilenc", "english": "nine"},
+      {"hungarian": "tíz", "english": "ten"},
+      {"hungarian": "húsz", "english": "twenty"},
+      {"hungarian": "száz", "english": "hundred"},
+      {"hungarian": "ezer", "english": "thousand"}
+    ]
+  },
+  {
+    "name": "Greetings",
+    "description": "Common greetings and phrases in Hungarian",
+    "words": [
+      {"hungarian": "szia", "english": "hi"},
+      {"hungarian": "hello", "english": "hello"},
+      {"hungarian": "viszlát", "english": "goodbye"},
+      {"hungarian": "köszönöm", "english": "thank you"},
+      {"hungarian": "kérem", "english": "please"},
+      {"hungarian": "igen", "english": "yes"},
+      {"hungarian": "nem", "english": "no"},
+      {"hungarian": "jó reggelt", "english": "good morning"},
+      {"hungarian": "jó estét", "english": "good evening"},
+      {"hungarian": "jó éjszakát", "english": "good night"},
+      {"hungarian": "hogy vagy", "english": "how are you"},
+      {"hungarian": "jól vagyok", "english": "I am fine"}
+    ]
+  }
+]

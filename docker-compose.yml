@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - quiz-db:/app/data
+    environment:
+      - PORT=8080
+      - GIN_MODE=release
+      - DATABASE_PATH=/app/data/quiz.db
+      - FRONTEND_PATH=/app/frontend
+      - DATA_PATH=/app/data/words.json
+
+volumes:
+  quiz-db:

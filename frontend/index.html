@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hungarian Language Learner</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="header-content">
+        <h1 class="site-title">
+          <span class="flag">🇭🇺</span> Hungarian Learner
+        </h1>
+        <nav class="site-nav">
+          <a href="#home" class="nav-link">Topics</a>
+          <a href="#custom-words" class="nav-link">My Words</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="loading" class="loading-overlay" style="display:none;">
+      <div class="spinner"></div>
+    </div>
+    <div id="error-banner" class="error-banner" style="display:none;"></div>
+    <div id="app"></div>
+  </main>
+
+  <script src="/utils.js"></script>
+  <script src="/pages.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

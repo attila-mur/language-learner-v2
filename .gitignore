@@ -1,0 +1,16 @@
+# Go
+backend/quiz.db
+backend/*.db
+*.db
+
+# Build
+backend/app
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
