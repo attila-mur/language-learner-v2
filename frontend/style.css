@@ -176,6 +176,30 @@ main.container {
   gap: 8px;
 }
 
+.custom-words-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topic-limit-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-secondary-dark);
+  background: var(--color-success-light);
+  border: 1px solid var(--color-secondary);
+  border-radius: 99px;
+  padding: 3px 10px;
+  white-space: nowrap;
+}
+
+.topic-limit-badge.at-limit {
+  color: var(--color-danger);
+  background: var(--color-danger-light);
+  border-color: var(--color-danger);
+}
+
 .topic-card-custom {
   border-color: var(--color-secondary);
   background: linear-gradient(135deg, #fff 85%, var(--color-success-light));

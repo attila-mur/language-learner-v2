@@ -102,5 +102,29 @@
       {"hungarian": "hogy vagy", "english": "how are you"},
       {"hungarian": "jól vagyok", "english": "I am fine"}
     ]
+  },
+  {
+    "name": "Body Parts",
+    "description": "Parts of the body in Hungarian",
+    "words": [
+      {"hungarian": "fej", "english": "head"},
+      {"hungarian": "szem", "english": "eye"},
+      {"hungarian": "fül", "english": "ear"},
+      {"hungarian": "orr", "english": "nose"},
+      {"hungarian": "száj", "english": "mouth"},
+      {"hungarian": "fog", "english": "tooth"},
+      {"hungarian": "kéz", "english": "hand"},
+      {"hungarian": "kar", "english": "arm"},
+      {"hungarian": "láb", "english": "leg"},
+      {"hungarian": "lábfej", "english": "foot"},
+      {"hungarian": "has", "english": "stomach"},
+      {"hungarian": "hát", "english": "back"},
+      {"hungarian": "váll", "english": "shoulder"},
+      {"hungarian": "térd", "english": "knee"},
+      {"hungarian": "ujj", "english": "finger"},
+      {"hungarian": "nyak", "english": "neck"},
+      {"hungarian": "mell", "english": "chest"},
+      {"hungarian": "arc", "english": "face"}
+    ]
   }
 ]

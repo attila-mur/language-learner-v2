@@ -271,7 +271,13 @@ function renderCustomWords(data, allTopics, sessionId, filterTopicId) {
   function render(wordsToShow, topicFilter) {
     app.innerHTML = `
       <div class="custom-words-wrapper">
-        <h2 class="page-title">My Custom Words</h2>
+        <div class="custom-words-header">
+          <h2 class="page-title">My Custom Words</h2>
+          <span class="topic-limit-badge ${customTopics.length >= 4 ? 'at-limit' : ''}"
+                title="Custom topics used">
+            Topics: ${customTopics.length}/4
+          </span>
+        </div>
         <p class="page-subtitle">Add your own vocabulary to practice alongside the built-in words.</p>
 
         <div class="add-word-form">
@@ -291,7 +297,10 @@ function renderCustomWords(data, allTopics, sessionId, filterTopicId) {
             <select id="topic-select" class="form-select">
               <option value="">-- Select a topic --</option>
               ${customTopics.map(t => `<option value="${t.id}" ${String(topicFilter) === String(t.id) ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
-              <option value="__new__">+ Create new topic...</option>
+              ${customTopics.length < 4
+                ? `<option value="__new__">+ Create new topic...</option>`
+                : `<option value="__new__" disabled>+ Create new topic... (limit reached)</option>`
+              }
             </select>
           </div>
           <div class="form-group" id="new-topic-group" style="display:none; margin-bottom:12px;">

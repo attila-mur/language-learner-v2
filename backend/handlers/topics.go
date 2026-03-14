@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const maxCustomTopics = 4
+
 func CreateCustomTopic(c *gin.Context) {
 	var req struct {
 		SessionID   string `json:"sessionId"`
@@ -36,6 +38,23 @@ func CreateCustomTopic(c *gin.Context) {
 	).Scan(&exists)
 	if err != nil || exists == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session"})
+		return
+	}
+
+	// Enforce custom topic limit
+	var topicCount int
+	if err := db.DB.QueryRow(
+		"SELECT COUNT(*) FROM topics WHERE session_id = ?", req.SessionID,
+	).Scan(&topicCount); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check topic count"})
+		return
+	}
+	if topicCount >= maxCustomTopics {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":       "Custom topic limit reached (4/4)",
+			"topicCount":  topicCount,
+			"topicLimit":  maxCustomTopics,
+		})
 		return
 	}
 
