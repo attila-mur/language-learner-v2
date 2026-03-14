@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: language-learner
+    runtime: docker
+    plan: free
+    envVars:
+      - key: GIN_MODE
+        value: release
+      - key: DATABASE_PATH
+        value: /app/data/quiz.db
+      - key: FRONTEND_PATH
+        value: /app/frontend
+      - key: DATA_PATH
+        value: /app/data/words.json
